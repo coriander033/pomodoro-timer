@@ -7,38 +7,69 @@ interface BreakReminderProps {
 }
 
 const MESSAGES: Record<TimerMode, { title: string; subtitle: string; action: string }> = {
-  focus: { title: '专注完成！', subtitle: '休息一下吧', action: '开始休息' },
+  focus: { title: '专注完成', subtitle: '休息一下吧', action: '开始休息' },
   shortBreak: { title: '短休息结束', subtitle: '准备下一个番茄', action: '开始专注' },
   longBreak: { title: '长休息结束', subtitle: '精力充沛，继续加油', action: '开始专注' },
 }
 
-/** A ripe tomato with a subtle glow — for focus-complete */
+/** A ripe tomato with stem and leaves — for focus-complete */
 function TomatoIcon() {
   return (
-    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="drop-shadow-[0_0_12px_rgba(232,93,74,0.4)]">
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" className="drop-shadow-[0_0_16px_rgba(232,93,74,0.45)]">
       <defs>
-        <radialGradient id="tomatoGlow" cx="40%" cy="35%" r="60%">
+        <radialGradient id="tomatoBody" cx="38%" cy="32%" r="62%">
           <stop offset="0%" stopColor="#F27D6C" />
-          <stop offset="100%" stopColor="#E85D4A" />
+          <stop offset="70%" stopColor="#E85D4A" />
+          <stop offset="100%" stopColor="#C94A3A" />
         </radialGradient>
       </defs>
+
+      {/* Stem */}
       <path
-        d="M32 8C24 8 18 14 18 22c0 2 0 4 2 6l12 12 12-12c2-2 2-4 2-6 0-8-6-14-14-14"
-        fill="url(#tomatoGlow)"
-      />
-      <path
-        d="M32 22c-2-2-4-4-6-6"
-        fill="none"
+        d="M36 18 L36 10"
         stroke="#5E8A6E"
-        strokeWidth="2"
+        strokeWidth="2.5"
         strokeLinecap="round"
       />
+      {/* Left leaf */}
       <path
-        d="M32 14c-2-2 0-6 0-4 2-2 4 2 0 4"
+        d="M36 14 C30 10 24 14 22 18 C28 16 34 16 36 14"
         fill="#7BA68C"
       />
+      {/* Right leaf */}
+      <path
+        d="M36 12 C42 8 48 12 50 16 C44 14 38 14 36 12"
+        fill="#9DC4AE"
+      />
+      {/* Small center leaf */}
+      <path
+        d="M36 11 C34 7 38 5 40 8 C38 9 36 10 36 11"
+        fill="#5E8A6E"
+        opacity="0.6"
+      />
+
+      {/* Tomato body */}
+      <ellipse cx="36" cy="44" rx="24" ry="22" fill="url(#tomatoBody)" />
+
+      {/* Lobes / contour lines */}
+      <path
+        d="M36 22 C30 30 28 40 30 50 C32 56 34 58 36 60"
+        fill="none"
+        stroke="#C94A3A"
+        strokeWidth="0.8"
+        opacity="0.4"
+      />
+      <path
+        d="M36 22 C42 30 44 40 42 50 C40 56 38 58 36 60"
+        fill="none"
+        stroke="#C94A3A"
+        strokeWidth="0.8"
+        opacity="0.4"
+      />
+
       {/* Highlight */}
-      <ellipse cx="26" cy="18" rx="4" ry="6" fill="white" opacity="0.15" />
+      <ellipse cx="28" cy="36" rx="6" ry="9" fill="white" opacity="0.12" />
+      <ellipse cx="44" cy="48" rx="3" ry="5" fill="white" opacity="0.06" />
     </svg>
   )
 }
