@@ -47,7 +47,10 @@ function SliderField({ label, value, min, max, unit, accentColor, onChange }: Sl
       setDragging(false)
     }
     const handleTouchMove = (e: TouchEvent) => {
-      if (draggingRef.current) setValueFromPosition(e.touches[0].clientX)
+      if (draggingRef.current) {
+        e.preventDefault()
+        setValueFromPosition(e.touches[0].clientX)
+      }
     }
     const handleTouchEnd = () => {
       draggingRef.current = false
@@ -82,12 +85,15 @@ function SliderField({ label, value, min, max, unit, accentColor, onChange }: Sl
         </span>
       </div>
 
-      {/* Custom slider track — larger hit area with inner visual track */}
+      {/* Custom slider track — touch-action:none prevents page scroll while dragging */}
       <div
         ref={trackRef}
-        className="relative cursor-pointer py-3"
+        className="relative cursor-pointer touch-none py-4 select-none"
         onMouseDown={(e) => startDrag(e.clientX)}
-        onTouchStart={(e) => startDrag(e.touches[0].clientX)}
+        onTouchStart={(e) => {
+          e.preventDefault()
+          startDrag(e.touches[0].clientX)
+        }}
       >
         {/* Visual track */}
         <div className="h-2 rounded-full bg-background">
