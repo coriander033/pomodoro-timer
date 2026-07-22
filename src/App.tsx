@@ -127,20 +127,20 @@ export default function App() {
       </button>
 
       {/* Mode toggle */}
-      <div className="relative z-10 mb-10">
+      <div className="relative z-10 mb-6 sm:mb-10">
         <ModeToggle mode={mode} onChange={handleModeChange} />
       </div>
 
       {/* Timer ring + display */}
-      <div className="relative z-10 mb-10 flex items-center justify-center">
-        <TimerRing progress={progress} color={ringColor} size={280} />
+      <div className="relative z-10 mb-6 sm:mb-10 flex items-center justify-center">
+        <TimerRing progress={progress} color={ringColor} size={220} mdSize={280} />
         <div className="absolute flex flex-col items-center">
           <TimerDisplay secondsLeft={secondsLeft} />
         </div>
       </div>
 
       {/* Controls */}
-      <div className="relative z-10 mb-8">
+      <div className="relative z-10 mb-5 sm:mb-8">
         <Controls
           status={status}
           onStart={start}
