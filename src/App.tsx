@@ -106,7 +106,8 @@ export default function App() {
     }
   }
 
-  const ringColor = mode === 'focus' ? '#E85D4A' : '#7BA68C'
+  const ringColor =
+    mode === 'focus' ? '#E85D4A' : mode === 'longBreak' ? '#4A7C64' : '#7BA68C'
 
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-4 font-sans">

@@ -74,7 +74,7 @@ function TomatoIcon() {
   )
 }
 
-/** A sprouting seedling — for break-complete (back to focus) */
+/** A sprouting seedling — for short-break-complete (back to focus) */
 function SproutIcon() {
   return (
     <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="drop-shadow-[0_0_12px_rgba(123,166,140,0.4)]">
@@ -111,11 +111,61 @@ function SproutIcon() {
   )
 }
 
+/** Soil / earth with a seed — for long-break-complete (ready to plant) */
+function SoilIcon() {
+  return (
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="drop-shadow-[0_0_12px_rgba(139,115,85,0.4)]">
+      <defs>
+        <linearGradient id="soilGrad" x1="32" y1="20" x2="32" y2="56" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#8B7355" />
+          <stop offset="100%" stopColor="#5C4A35" />
+        </linearGradient>
+        <radialGradient id="seedGrad" cx="50%" cy="40%" r="50%">
+          <stop offset="0%" stopColor="#9DC4AE" />
+          <stop offset="100%" stopColor="#5E8A6E" />
+        </radialGradient>
+      </defs>
+
+      {/* Soil mound */}
+      <path
+        d="M8 44 C8 36 16 28 32 28 C48 28 56 36 56 44 C56 52 48 56 32 56 C16 56 8 52 8 44Z"
+        fill="url(#soilGrad)"
+      />
+
+      {/* Soil texture lines */}
+      <path d="M16 42 C20 40 24 42 28 41" fill="none" stroke="#6B5540" strokeWidth="0.8" opacity="0.5" />
+      <path d="M36 40 C40 38 44 40 48 39" fill="none" stroke="#6B5540" strokeWidth="0.8" opacity="0.5" />
+      <path d="M20 48 C24 46 28 48 32 47" fill="none" stroke="#6B5540" strokeWidth="0.8" opacity="0.4" />
+      <path d="M38 46 C42 44 46 46 50 45" fill="none" stroke="#6B5540" strokeWidth="0.8" opacity="0.4" />
+
+      {/* Seed */}
+      <ellipse cx="32" cy="38" rx="5" ry="6" fill="url(#seedGrad)" />
+
+      {/* Tiny sprout emerging from seed */}
+      <path
+        d="M32 34 L32 30"
+        stroke="#7BA68C"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M32 31 C29 29 28 30 29 32 C30 31 31 31 32 31"
+        fill="#9DC4AE"
+        opacity="0.8"
+      />
+
+      {/* Highlight on soil */}
+      <ellipse cx="24" cy="38" rx="4" ry="2" fill="white" opacity="0.06" />
+    </svg>
+  )
+}
+
 export function BreakReminder({ show, mode, onConfirm }: BreakReminderProps) {
   if (!show) return null
 
   const { title, subtitle, action } = MESSAGES[mode]
   const isBreak = mode !== 'focus'
+  const isLongBreak = mode === 'longBreak'
 
   return (
     <div
@@ -125,13 +175,13 @@ export function BreakReminder({ show, mode, onConfirm }: BreakReminderProps) {
       <div
         className="mx-4 w-full max-w-xs rounded-2xl p-8 text-center shadow-2xl"
         style={{
-          backgroundColor: isBreak ? '#2A3D32' : '#3D2A2A',
+          backgroundColor: isLongBreak ? '#3D3528' : isBreak ? '#2A3D32' : '#3D2A2A',
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Icon */}
         <div className="mb-5 flex justify-center">
-          {isBreak ? <SproutIcon /> : <TomatoIcon />}
+          {isLongBreak ? <SoilIcon /> : isBreak ? <SproutIcon /> : <TomatoIcon />}
         </div>
 
         <h2 className="mb-2 text-2xl font-bold text-foreground">{title}</h2>
