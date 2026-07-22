@@ -20,34 +20,57 @@ interface SliderFieldProps {
 
 function SliderField({ label, value, min, max, unit, accentColor, onChange }: SliderFieldProps) {
   const trackRef = useRef<HTMLDivElement>(null)
-  const [dragging, setDragging] = useState(false)
+  const draggingRef = useRef(false)
+  const [dragging, setDragging] = useState(false) // only for visual thumb scale
 
   const pct = ((value - min) / (max - min)) * 100
 
-  const setValueFromPosition = useCallback(
-    (clientX: number) => {
-      const track = trackRef.current
-      if (!track) return
-      const rect = track.getBoundingClientRect()
-      const ratio = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1)
-      onChange(Math.round(min + ratio * (max - min)))
-    },
-    [min, max, onChange],
-  )
+  // Keep latest onChange in a ref so listeners never need re-binding
+  const onChangeRef = useRef(onChange)
+  useEffect(() => { onChangeRef.current = onChange }, [onChange])
 
+  const setValueFromPosition = useCallback((clientX: number) => {
+    const track = trackRef.current
+    if (!track) return
+    const rect = track.getBoundingClientRect()
+    const ratio = Math.min(Math.max((clientX - rect.left) / rect.width, 0), 1)
+    onChangeRef.current(Math.round(min + ratio * (max - min)))
+  }, [min, max])
+
+  // Attach listeners once on mount, use ref for drag state
   useEffect(() => {
-    if (!dragging) return
-
-    const handleMove = (e: MouseEvent) => setValueFromPosition(e.clientX)
-    const handleUp = () => setDragging(false)
+    const handleMove = (e: MouseEvent) => {
+      if (draggingRef.current) setValueFromPosition(e.clientX)
+    }
+    const handleUp = () => {
+      draggingRef.current = false
+      setDragging(false)
+    }
+    const handleTouchMove = (e: TouchEvent) => {
+      if (draggingRef.current) setValueFromPosition(e.touches[0].clientX)
+    }
+    const handleTouchEnd = () => {
+      draggingRef.current = false
+      setDragging(false)
+    }
 
     window.addEventListener('mousemove', handleMove)
     window.addEventListener('mouseup', handleUp)
+    window.addEventListener('touchmove', handleTouchMove)
+    window.addEventListener('touchend', handleTouchEnd)
     return () => {
       window.removeEventListener('mousemove', handleMove)
       window.removeEventListener('mouseup', handleUp)
+      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [dragging, setValueFromPosition])
+  }, [setValueFromPosition])
+
+  const startDrag = (clientX: number) => {
+    draggingRef.current = true
+    setDragging(true)
+    setValueFromPosition(clientX)
+  }
 
   return (
     <div className="space-y-2">
@@ -59,28 +82,28 @@ function SliderField({ label, value, min, max, unit, accentColor, onChange }: Sl
         </span>
       </div>
 
-      {/* Custom slider track */}
+      {/* Custom slider track — larger hit area with inner visual track */}
       <div
         ref={trackRef}
-        className="relative h-2 cursor-pointer rounded-full bg-background"
-        onMouseDown={(e) => {
-          setDragging(true)
-          setValueFromPosition(e.clientX)
-        }}
+        className="relative cursor-pointer py-3"
+        onMouseDown={(e) => startDrag(e.clientX)}
+        onTouchStart={(e) => startDrag(e.touches[0].clientX)}
       >
-        {/* Filled portion */}
-        <div
-          className="absolute inset-y-0 left-0 rounded-full transition-[width] duration-75"
-          style={{ width: `${pct}%`, backgroundColor: accentColor }}
-        />
+        {/* Visual track */}
+        <div className="h-2 rounded-full bg-background">
+          <div
+            className="h-full rounded-full"
+            style={{ width: `${pct}%`, backgroundColor: accentColor }}
+          />
+        </div>
         {/* Thumb */}
         <div
           className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full
-            border-2 border-white shadow-md transition-transform duration-75"
+            border-2 border-white shadow-md transition-transform duration-100"
           style={{
             left: `${pct}%`,
             backgroundColor: accentColor,
-            ...(dragging ? { transform: 'translate(-50%, -50%) scale(1.2)' } : {}),
+            transform: `translate(-50%, -50%) scale(${dragging ? 1.25 : 1})`,
           }}
         />
       </div>
