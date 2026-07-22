@@ -111,51 +111,86 @@ function SproutIcon() {
   )
 }
 
-/** Soil / earth with a seed — for long-break-complete (ready to plant) */
+/** Rich soil bed with a sprouting seed — for long-break-complete */
 function SoilIcon() {
   return (
-    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" className="drop-shadow-[0_0_12px_rgba(139,115,85,0.4)]">
+    <svg width="72" height="72" viewBox="0 0 72 72" fill="none" className="drop-shadow-[0_0_16px_rgba(120,95,65,0.45)]">
       <defs>
-        <linearGradient id="soilGrad" x1="32" y1="20" x2="32" y2="56" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#8B7355" />
+        <linearGradient id="soilTop" x1="36" y1="24" x2="36" y2="44" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#7A6248" />
           <stop offset="100%" stopColor="#5C4A35" />
         </linearGradient>
-        <radialGradient id="seedGrad" cx="50%" cy="40%" r="50%">
-          <stop offset="0%" stopColor="#9DC4AE" />
+        <linearGradient id="soilBase" x1="36" y1="40" x2="36" y2="60" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#5C4A35" />
+          <stop offset="100%" stopColor="#3D3225" />
+        </linearGradient>
+        <radialGradient id="seedGrad" cx="45%" cy="40%" r="55%">
+          <stop offset="0%" stopColor="#B8D8C0" />
+          <stop offset="60%" stopColor="#7BA68C" />
           <stop offset="100%" stopColor="#5E8A6E" />
         </radialGradient>
+        <linearGradient id="sproutGrad" x1="36" y1="22" x2="36" y2="34" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#9DC4AE" />
+          <stop offset="100%" stopColor="#5E8A6E" />
+        </linearGradient>
       </defs>
 
-      {/* Soil mound */}
+      {/* Ground / earth base */}
       <path
-        d="M8 44 C8 36 16 28 32 28 C48 28 56 36 56 44 C56 52 48 56 32 56 C16 56 8 52 8 44Z"
-        fill="url(#soilGrad)"
+        d="M6 48 C6 40 12 32 20 28 C26 25 30 24 36 24 C42 24 46 25 52 28 C60 32 66 40 66 48 C66 54 60 60 36 60 C12 60 6 54 6 48Z"
+        fill="url(#soilBase)"
       />
 
-      {/* Soil texture lines */}
-      <path d="M16 42 C20 40 24 42 28 41" fill="none" stroke="#6B5540" strokeWidth="0.8" opacity="0.5" />
-      <path d="M36 40 C40 38 44 40 48 39" fill="none" stroke="#6B5540" strokeWidth="0.8" opacity="0.5" />
-      <path d="M20 48 C24 46 28 48 32 47" fill="none" stroke="#6B5540" strokeWidth="0.8" opacity="0.4" />
-      <path d="M38 46 C42 44 46 46 50 45" fill="none" stroke="#6B5540" strokeWidth="0.8" opacity="0.4" />
-
-      {/* Seed */}
-      <ellipse cx="32" cy="38" rx="5" ry="6" fill="url(#seedGrad)" />
-
-      {/* Tiny sprout emerging from seed */}
+      {/* Soil surface — raised bed */}
       <path
-        d="M32 34 L32 30"
-        stroke="#7BA68C"
-        strokeWidth="1.2"
+        d="M10 44 C10 36 16 30 24 27 C29 25 33 24 36 24 C39 24 43 25 48 27 C56 30 62 36 62 44 C62 48 58 52 36 52 C14 52 10 48 10 44Z"
+        fill="url(#soilTop)"
+      />
+
+      {/* Furrow lines — rows in the soil */}
+      <path d="M14 40 C22 38 30 40 38 39 C46 38 54 40 58 39" fill="none" stroke="#4A3D2C" strokeWidth="0.7" opacity="0.4" strokeLinecap="round" />
+      <path d="M12 44 C20 42 28 44 36 43 C44 42 52 44 60 43" fill="none" stroke="#4A3D2C" strokeWidth="0.7" opacity="0.35" strokeLinecap="round" />
+      <path d="M16 48 C24 46 32 48 40 47 C48 46 56 48 60 47" fill="none" stroke="#4A3D2C" strokeWidth="0.6" opacity="0.3" strokeLinecap="round" />
+
+      {/* Soil texture dots */}
+      <circle cx="18" cy="46" r="0.8" fill="#4A3D2C" opacity="0.3" />
+      <circle cx="26" cy="43" r="0.6" fill="#4A3D2C" opacity="0.25" />
+      <circle cx="44" cy="45" r="0.7" fill="#4A3D2C" opacity="0.3" />
+      <circle cx="52" cy="42" r="0.5" fill="#4A3D2C" opacity="0.2" />
+      <circle cx="34" cy="47" r="0.6" fill="#4A3D2C" opacity="0.25" />
+      <circle cx="48" cy="47" r="0.8" fill="#4A3D2C" opacity="0.2" />
+
+      {/* Seed — nestled in soil */}
+      <ellipse cx="36" cy="40" rx="4" ry="5" fill="url(#seedGrad)" />
+      <ellipse cx="34.5" cy="38.5" rx="1.5" ry="2" fill="white" opacity="0.15" />
+
+      {/* Sprout emerging from seed */}
+      <path
+        d="M36 36 C36 30 36 26 36 22"
+        stroke="url(#sproutGrad)"
+        strokeWidth="2"
         strokeLinecap="round"
-      />
-      <path
-        d="M32 31 C29 29 28 30 29 32 C30 31 31 31 32 31"
-        fill="#9DC4AE"
-        opacity="0.8"
+        fill="none"
       />
 
-      {/* Highlight on soil */}
-      <ellipse cx="24" cy="38" rx="4" ry="2" fill="white" opacity="0.06" />
+      {/* Sprout leaves */}
+      <path
+        d="M36 26 C32 23 28 25 28 28 C31 27 34 26 36 26"
+        fill="#7BA68C"
+      />
+      <path
+        d="M36 24 C40 21 44 23 44 26 C41 25 38 24 36 24"
+        fill="#9DC4AE"
+      />
+      {/* Tiny new leaf at tip */}
+      <path
+        d="M36 23 C34 19 37 17 39 19 C38 20 37 22 36 23"
+        fill="#B8D8C0"
+        opacity="0.7"
+      />
+
+      {/* Highlight on soil surface */}
+      <ellipse cx="26" cy="34" rx="6" ry="2" fill="white" opacity="0.05" />
     </svg>
   )
 }
